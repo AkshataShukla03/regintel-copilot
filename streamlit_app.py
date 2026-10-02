@@ -11,7 +11,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-conn = st.connection("snowflake", ttl=os.getenv("SNOWFLAKE_CONNECTION_TTL"))
+_ttl = os.getenv("SNOWFLAKE_CONNECTION_TTL")
+conn = st.connection("snowflake", ttl=int(_ttl) if _ttl else None)
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
