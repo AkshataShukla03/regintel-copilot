@@ -1,11 +1,6 @@
-[project]
+[tool.poetry]
 name = "regintel-copilot"
-requires-python = ">= 3.11"
 version = "0.0.1"
-description = "Risk, Fraud and Regulatory Intelligence Copilot"
-dependencies = [
-    "streamlit[snowflake]>=1.54.0"
-]
-
-[tool.uv]
-constraint-dependencies = ["numba>=0.56.0"]
+description = ""
+authors = []
+package-mode = false
