@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: A4; margin: 2cm; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; line-height: 1.6; font-size: 11pt; }
+  h1 { color: #0f4c75; font-size: 24pt; border-bottom: 3px solid #0f4c75; padding-bottom: 8px; margin-top: 30px; }
+  h2 { color: #1b262c; font-size: 16pt; border-bottom: 1px solid #bbe1fa; padding-bottom: 4px; margin-top: 24px; }
+  h3 { color: #3282b8; font-size: 13pt; margin-top: 18px; }
+  .cover { text-align: center; padding: 80px 0 40px 0; page-break-after: always; }
+  .cover h1 { font-size: 36pt; border: none; color: #0f4c75; }
+  .cover .subtitle { font-size: 16pt; color: #3282b8; margin-top: 10px; }
+  .cover .meta { font-size: 11pt; color: #666; margin-top: 40px; }
+  .kpi-box { display: inline-block; width: 22%; text-align: center; padding: 12px; margin: 4px; background: #f0f7ff; border-radius: 8px; vertical-align: top; }
+  .kpi-box .number { font-size: 22pt; font-weight: bold; color: #0f4c75; }
+  .kpi-box .label { font-size: 9pt; color: #666; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 10pt; }
+  th { background: #0f4c75; color: white; padding: 8px 10px; text-align: left; }
+  td { padding: 6px 10px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) { background: #f8f9fa; }
+  .arch-diagram { background: #1a1a2e; color: #bbe1fa; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 9pt; white-space: pre; line-height: 1.4; overflow-x: auto; }
+  .highlight { background: #fff3cd; padding: 12px; border-left: 4px solid #ffc107; margin: 12px 0; border-radius: 4px; }
+  .section-intro { font-style: italic; color: #555; margin-bottom: 12px; }
+  .page-break { page-break-before: always; }
+  .screen-section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 12px 0; background: #fafafa; }
+  .screen-title { font-weight: bold; color: #0f4c75; font-size: 12pt; margin-bottom: 8px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 9pt; font-weight: bold; color: white; }
+  .badge-critical { background: #dc3545; }
+  .badge-high { background: #fd7e14; }
+  .badge-medium { background: #ffc107; color: #333; }
+  .badge-low { background: #28a745; }
+  .footer { text-align: center; font-size: 8pt; color: #999; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <div style="font-size: 60pt; margin-bottom: 20px;">🛡️</div>
+  <h1>RegIntel Copilot</h1>
+  <div class="subtitle">Risk, Fraud &amp; Regulatory Intelligence Copilot<br>for Banking and NBFC Teams</div>
+  <div style="margin-top: 30px; padding: 15px; background: #f0f7ff; border-radius: 8px; display: inline-block;">
+    <strong>Hackathon Submission — Project Document</strong>
+  </div>
+  <div class="meta">
+    <p>Built entirely with Snowflake CoCo (Cortex Code)</p>
+    <p>Snowflake Cortex Agent · Cortex Analyst · Cortex Search · Dynamic Tables · Streamlit</p>
+    <p style="margin-top: 30px;">October 2026</p>
+  </div>
+</div>
+
+<!-- PAGE 2: EXECUTIVE SUMMARY -->
+<h1>1. Executive Summary</h1>
+
+<p class="section-intro">What it is, what it does, and why it matters.</p>
+
+<p><strong>RegIntel Copilot</strong> is an AI-powered compliance assistant built entirely on Snowflake that lets banking compliance teams ask natural language questions and receive governed, explainable, evidence-backed answers — covering the full workflow from fraud signal detection to audit-ready investigation reports.</p>
+
+<div class="highlight">
+  <strong>The core differentiator is not fraud detection.</strong> There are thousands of fraud detection systems. The differentiator is: <em>structured evidence + regulatory knowledge + governed AI + auditability</em> — in a single conversational interface.
+</div>
+
+<p>When an analyst asks <em>"Why is this account high-risk, and what regulatory action is required?"</em>, the system simultaneously queries transaction data for evidence, searches policy documents for applicable rules, and produces a response that cites both — with a clear chain from signal to evidence to finding.</p>
+
+<div style="text-align: center; margin: 20px 0;">
+  <div class="kpi-box">
+    <div class="number">$210.36M</div>
+    <div class="label">Modeled Suspicious Exposure</div>
+  </div>
+  <div class="kpi-box">
+    <div class="number">2,477</div>
+    <div class="label">Flagged Transactions</div>
+  </div>
+  <div class="kpi-box">
+    <div class="number">4</div>
+    <div class="label">Fraud Typologies</div>
+  </div>
+  <div class="kpi-box">
+    <div class="number">42,477</div>
+    <div class="label">Total Transactions</div>
+  </div>
+</div>
+
+<!-- PAGE 3: ARCHITECTURE -->
+<h1 class="page-break">2. Architecture</h1>
+
+<p class="section-intro">End-to-end Snowflake-native — no external services required.</p>
+
+<div class="arch-diagram">
+                    ┌──────────────────────────────────┐
+                    │         STREAMLIT APP             │
+                    │  Command · Fraud · Alerts · Chat  │
+                    └──────────────┬───────────────────┘
+                                   │
+                           ┌───────┴───────┐
+                           │ CORTEX AGENT  │
+                           └───┬───────┬───┘
+                               │       │
+               ┌───────────────┘       └───────────────┐
+               ▼                                       ▼
+       CORTEX ANALYST                          CORTEX SEARCH
+       (Text-to-SQL)                           (Policy RAG)
+               │                                       │
+               ▼                                       ▼
+       SEMANTIC VIEW                           15 Policy Docs
+       7 tables · 10 VQRs                     AML · Basel · OFAC
+               │
+               ▼
+   ┌───────────────────────┐
+   │   DYNAMIC TABLES (5)  │    ←── 5-minute refresh
+   │  Risk · Structuring   │
+   │  Velocity · HighRisk  │
+   │  Regulatory Metrics   │
+   └───────────┬───────────┘
+               ▼
+   ┌───────────────────────┐
+   │      RAW DATA         │    ←── 500 customers · 1,200 accounts
+   │  42,477 transactions  │        15 rules · 29 alerts
+   └───────────────────────┘
+               ▲
+               │ Daily 6 AM ET
+       ┌───────┴───────┐
+       │  FRAUD SCAN   │
+       │  (Scheduled)  │
+       └───────────────┘
+</div>
+
+<h2>Snowflake Services Used</h2>
+<table>
+  <tr><th>Component</th><th>Snowflake Service</th><th>Purpose</th></tr>
+  <tr><td>Enrichment Pipeline</td><td>Dynamic Tables (5)</td><td>Near-real-time risk scoring, fraud detection</td></tr>
+  <tr><td>AI Orchestration</td><td>Cortex Agent</td><td>Natural language tool routing</td></tr>
+  <tr><td>Structured Analytics</td><td>Cortex Analyst + Semantic View</td><td>Governed text-to-SQL with verified queries</td></tr>
+  <tr><td>Policy Knowledge</td><td>Cortex Search</td><td>RAG over 15 regulatory documents</td></tr>
+  <tr><td>Governed Data Layer</td><td>Semantic Views</td><td>7 tables, 10 VQRs, governed access</td></tr>
+  <tr><td>Automation</td><td>Scheduled Tasks</td><td>Daily fraud scan at 6 AM ET</td></tr>
+  <tr><td>Application</td><td>Streamlit in Snowflake</td><td>Dashboard, investigation reports, chat</td></tr>
+  <tr><td>Development</td><td>CoCo (Cortex Code)</td><td>Entire build lifecycle</td></tr>
+</table>
+
+<!-- PAGE 4: DATA MODEL -->
+<h1 class="page-break">3. Data Model &amp; Fraud Patterns</h1>
+
+<h2>Synthetic Data Layer</h2>
+<table>
+  <tr><th>Table</th><th>Records</th><th>Key Fields</th></tr>
+  <tr><td>CUSTOMERS</td><td>500</td><td>KYC status, PEP flag, sanctions, risk rating, occupation, income</td></tr>
+  <tr><td>ACCOUNTS</td><td>1,200</td><td>5 types (savings, checking, business, loan, FD), status, balance</td></tr>
+  <tr><td>TRANSACTIONS</td><td>42,477</td><td>8 types, 4 currencies, channels, risk scores, fraud labels</td></tr>
+  <tr><td>REGULATORY_RULES</td><td>15</td><td>BSA/AML, Basel III, OFAC, FATF with thresholds</td></tr>
+  <tr><td>ALERTS</td><td>29</td><td>5 statuses, severity, assigned investigator, SAR filing</td></tr>
+  <tr><td>POLICY_DOCUMENTS</td><td>15</td><td>AML, Basel III, OFAC, KYC, filing templates</td></tr>
+</table>
+
+<h2>Embedded Fraud Patterns (Labeled Ground Truth)</h2>
+<table>
+  <tr><th>Pattern</th><th>Transactions</th><th>Exposure</th><th>Detection Method</th></tr>
+  <tr><td><span class="badge badge-critical">STRUCTURING</span></td><td>1,357</td><td>$12.18M</td><td>Repeated sub-threshold deposits within aggregation windows</td></tr>
+  <tr><td><span class="badge badge-critical">LAYERING</span></td><td>200</td><td>$55.16M</td><td>Rapid multi-hop transfers through account chains</td></tr>
+  <tr><td><span class="badge badge-high">ROUND-TRIP</span></td><td>120</td><td>$53.23M</td><td>Funds returning to origin via intermediaries</td></tr>
+  <tr><td><span class="badge badge-high">RAPID MOVEMENT</span></td><td>800</td><td>$89.79M</td><td>Burst high-value transfers inconsistent with baseline</td></tr>
+  <tr style="font-weight: bold;"><td>TOTAL</td><td>2,477</td><td>$210.36M</td><td></td></tr>
+</table>
+
+<h2>Enrichment Pipeline (5 Dynamic Tables)</h2>
+<table>
+  <tr><th>Dynamic Table</th><th>Rows</th><th>What It Computes</th></tr>
+  <tr><td>CUSTOMER_RISK_PROFILE</td><td>500</td><td>Composite 0–100 risk score (KYC + PEP + sanctions + behavior)</td></tr>
+  <tr><td>STRUCTURING_DETECTION</td><td>296</td><td>Windowed analysis: sub-threshold cash deposits in 48h windows</td></tr>
+  <tr><td>TRANSACTION_VELOCITY</td><td>33,120</td><td>Daily volume vs 30-day rolling average, 3x+ anomaly flags</td></tr>
+  <tr><td>HIGH_RISK_TRANSACTIONS</td><td>2,494</td><td>Multi-signal scoring: txn risk + customer + jurisdiction + pattern</td></tr>
+  <tr><td>REGULATORY_METRICS</td><td>1</td><td>23 compliance KPIs refreshed every 5 minutes</td></tr>
+</table>
+
+<!-- PAGE 5: APPLICATION WALKTHROUGH -->
+<h1 class="page-break">4. Application Walkthrough</h1>
+
+<p class="section-intro">The application has five views, designed around the compliance analyst's workflow.</p>
+
+<h2>4.1 Command Center</h2>
+<div class="screen-section">
+  <div class="screen-title">Hero KPIs — How much? How many? What needs attention?</div>
+  <div style="text-align: center; margin: 10px 0;">
+    <div class="kpi-box"><div class="number">$210.36M</div><div class="label">Suspicious Exposure</div></div>
+    <div class="kpi-box"><div class="number">2,477</div><div class="label">Flagged Txns</div></div>
+    <div class="kpi-box"><div class="number">8</div><div class="label">Active Alerts</div></div>
+    <div class="kpi-box"><div class="number">2</div><div class="label">SLA At Risk</div></div>
+  </div>
+  <p>Below the hero KPIs: Customer Risk Distribution chart (Critical/High/Medium/Low), Fraud Pattern Activity chart (by typology), and an <strong>Investigation Queue</strong> showing the highest-priority cases sorted by severity and exposure.</p>
+</div>
+
+<h2>4.2 Fraud Detection</h2>
+<div class="screen-section">
+  <div class="screen-title">Two tabs: Structuring Detection + High-Risk Transactions</div>
+  <p><strong>Structuring Detection:</strong> Shows 296 findings — repeated sub-threshold cash deposits within 48-hour aggregation windows, classified by severity (CRITICAL, HIGH, MEDIUM, LOW). Filterable by severity level.</p>
+  <p><strong>High-Risk Transactions:</strong> 2,494 transactions scored across multiple risk signals. Filterable by fraud pattern type. Shows transaction ID, account, customer name, amount, risk score, and primary risk reason.</p>
+</div>
+
+<h2>4.3 Alerts &amp; Investigation</h2>
+<div class="screen-section">
+  <div class="screen-title">Alert Queue + Investigation Report Generator</div>
+  <p><strong>Alert Queue:</strong> All 29 alerts filterable by status (Open, Under Investigation, Escalated, Closed). Joined with regulatory rules to show which regulation triggered each alert.</p>
+  <p><strong>Investigation Report Generator:</strong> Select any alert → click "Generate Investigation Report" → the system produces a structured 7-section report:</p>
+  <ol>
+    <li><strong>Subject Information</strong> — Customer name, ID, type, nationality, account details</li>
+    <li><strong>Risk Assessment</strong> — Composite score, PEP/sanctions flags, transaction counts</li>
+    <li><strong>Alert Details &amp; Fraud Typology</strong> — Triggered rule, threshold, description</li>
+    <li><strong>Supporting Transaction Evidence</strong> — Individual transactions with amounts and dates</li>
+    <li><strong>Applicable Regulatory Requirements</strong> — Retrieved from policy docs by Cortex Agent</li>
+    <li><strong>Investigation Findings</strong> — Current status, SAR filing status, resolution notes</li>
+    <li><strong>Recommended Next Steps</strong> — Context-aware (PEP → senior approval, expired KYC → refresh, etc.)</li>
+  </ol>
+  <p style="font-size: 9pt; color: #999;">Includes disclaimer: "This report is generated by an AI system and requires review by a qualified compliance analyst before any regulatory action is taken."</p>
+</div>
+
+<h2>4.4 Customer Risk</h2>
+<div class="screen-section">
+  <div class="screen-title">Customer profiles with composite risk scoring</div>
+  <p>500 customers filterable by risk rating and minimum composite score. Shows PEP/sanctions flags, account count, balance, flagged transaction count, and active alerts. Includes KYC Renewal Required section for expired/failed/pending verifications.</p>
+</div>
+
+<h2>4.5 Ask Copilot</h2>
+<div class="screen-section">
+  <div class="screen-title">Natural language interface backed by Cortex Agent</div>
+  <p>Chat interface powered by the <code>REGINTEL_COPILOT_AGENT</code>. The agent routes questions to the appropriate tool:</p>
+  <ul>
+    <li><strong>Data questions</strong> → Cortex Analyst queries the semantic view (governed SQL)</li>
+    <li><strong>Policy questions</strong> → Cortex Search retrieves regulatory documents</li>
+    <li><strong>Combined questions</strong> → Both tools used; response cites evidence + regulation</li>
+  </ul>
+  <p><strong>Example:</strong> <em>"Does the structuring pattern on ACCT-0000001 meet our SAR investigation criteria? Cite the relevant policy."</em> → Returns transaction evidence + BSA/SAR policy section + 30/60-day filing timeline.</p>
+</div>
+
+<!-- PAGE 6: HERO WORKFLOW -->
+<h1 class="page-break">5. Hero Workflow: Signal → Evidence → Finding</h1>
+
+<p class="section-intro">This is the core demo: the complete compliance workflow in one interaction.</p>
+
+<div class="highlight">
+  <strong>The flow:</strong> Detection → Investigation → Regulatory Reasoning → Evidence → Documentation
+</div>
+
+<h3>Step 1: Detection</h3>
+<p>The Command Center shows <strong>$210.36M</strong> in modeled suspicious exposure across <strong>2,477</strong> flagged transactions. The Investigation Queue surfaces the highest-priority case: a CRITICAL structuring alert on account ACCT-0000001.</p>
+
+<h3>Step 2: Investigation</h3>
+<p>The analyst clicks into Alerts &amp; Investigation → selects the alert → clicks <strong>"Generate Investigation Report."</strong> The system compiles: customer profile (KYC status, PEP flag, risk score), account details, the specific transactions that form the structuring pattern, and the regulatory rule that triggered the alert.</p>
+
+<h3>Step 3: Regulatory Reasoning</h3>
+<p>The analyst switches to Ask Copilot and asks: <em>"Does this structuring pattern meet our SAR investigation criteria? Cite the relevant policy."</em></p>
+<p>The Cortex Agent responds with a structured assessment:</p>
+<ul>
+  <li><strong>Assessment:</strong> Potentially reportable — analyst review required</li>
+  <li><strong>Transaction Evidence:</strong> 17 cash deposits, $164,700 aggregate, 48-hour window</li>
+  <li><strong>Risk Indicators:</strong> Repeated sub-threshold deposits, aggregated cash activity, pattern inconsistent with baseline</li>
+  <li><strong>Regulatory Context:</strong> BSA/SAR policy, Section 4.2</li>
+  <li><strong>Filing Timeline:</strong> 30 calendar days from initial detection; up to 60 days if no suspect identified (per FinCEN)</li>
+  <li><strong>Disclaimer:</strong> AI-generated analysis; final determination requires authorized compliance review</li>
+</ul>
+
+<h3>Step 4: Evidence &amp; Documentation</h3>
+<p>The investigation report contains all evidence, regulatory context, and recommended next steps — ready for compliance review and case management filing.</p>
+
+<!-- PAGE 7: REGULATORY SCOPE -->
+<h1 class="page-break">6. Regulatory Scope</h1>
+
+<table>
+  <tr><th>Framework</th><th>Coverage</th><th>Key Thresholds</th></tr>
+  <tr><td>BSA/AML</td><td>CTR reporting, SAR filing, structuring detection, wire record-keeping</td><td>$10,000 CTR; SAR per 31 CFR §1020.320</td></tr>
+  <tr><td>Basel III</td><td>Liquidity Coverage Ratio, Capital Adequacy Ratios</td><td>100% LCR minimum; 4.5% CET1, 8% total capital</td></tr>
+  <tr><td>OFAC</td><td>SDN list screening, blocking and reporting</td><td>All transactions screened; 10-day blocking report</td></tr>
+  <tr><td>FATF</td><td>High-risk jurisdiction guidance, EDD recommendations</td><td>Jurisdiction lists per current FATF publications</td></tr>
+</table>
+
+<div class="highlight">
+  <strong>SAR Filing Nuance:</strong> The prototype models the $5,000 threshold applicable to banks under 31 CFR §1020.320. Thresholds vary by institution type and jurisdiction. The 30-day filing deadline includes the FinCEN extension: if no suspect is identified, filing may be delayed up to 60 calendar days total.
+</div>
+
+<p><strong>Production note:</strong> In production, regulatory scope would be scoped to the specific institution's obligations. FATF high-risk jurisdiction lists are time-sensitive and must be updated per current FATF publications. This prototype includes all frameworks to demonstrate cross-domain regulatory reasoning.</p>
+
+<!-- PAGE 8: COCO USAGE -->
+<h1 class="page-break">7. CoCo Usage Across the Full Lifecycle</h1>
+
+<p class="section-intro">All hackathon solutions must use CoCo across the full lifecycle. Here is the evidence for each phase.</p>
+
+<table>
+  <tr><th>Phase</th><th>What CoCo Did</th><th>Evidence</th></tr>
+  <tr><td><strong>Planning</strong></td><td>Designed data model, architecture, regulatory scope</td><td>Schema design, table structures, fraud pattern selection</td></tr>
+  <tr><td><strong>Data Generation</strong></td><td>42,477 synthetic transactions with 4 labeled fraud patterns</td><td>Referentially consistent FKs, realistic distributions</td></tr>
+  <tr><td><strong>Pipeline</strong></td><td>5 dynamic tables with windowed aggregations, composite scoring</td><td>CREATE DYNAMIC TABLE statements, 5-min refresh</td></tr>
+  <tr><td><strong>Semantic Layer</strong></td><td>7-table semantic view with 10 verified queries</td><td>sv-generate, sv-deploy via CoCo CLI</td></tr>
+  <tr><td><strong>Search Service</strong></td><td>Cortex Search over 15 policy documents</td><td>CREATE CORTEX SEARCH SERVICE</td></tr>
+  <tr><td><strong>Agent</strong></td><td>Dual-tool Cortex Agent (Analyst + Search)</td><td>agent-write, agent-deploy via CoCo CLI</td></tr>
+  <tr><td><strong>Application</strong></td><td>5-view Streamlit app with investigation reports</td><td>627-line streamlit_app.py</td></tr>
+  <tr><td><strong>Automation</strong></td><td>Scheduled daily fraud scan task</td><td>CREATE TASK with CRON schedule</td></tr>
+  <tr><td><strong>Testing</strong></td><td>Validated agent responses, verified SQL accuracy</td><td>DATA_AGENT_RUN test queries, VQR validation</td></tr>
+</table>
+
+<h2>CoCo Capabilities Demonstrated</h2>
+<ul>
+  <li>Synthetic data generation with embedded fraud signals</li>
+  <li>Data pipeline creation using dynamic tables</li>
+  <li>Semantic model and ontology authoring with verified queries</li>
+  <li>Document processing and indexing via Cortex Search</li>
+  <li>Streamlit report and app generation</li>
+  <li>Scheduled automation via Tasks</li>
+  <li>Guardrails through semantic view scoping (governed answers only)</li>
+</ul>
+
+<!-- PAGE 9: LIMITATIONS -->
+<h1 class="page-break">8. Limitations &amp; Future Directions</h1>
+
+<h2>Limitations</h2>
+<p>This is a <strong>production-oriented prototype</strong> built on synthetic data in a hackathon environment. A production deployment would require:</p>
+<ul>
+  <li>Real transaction data with proper access controls and encryption</li>
+  <li>Model validation and explainability testing</li>
+  <li>Regulatory change management processes</li>
+  <li>Disaster recovery and audit logging</li>
+  <li>Security review and penetration testing</li>
+  <li>Integration with existing case management and filing systems (e.g., FinCEN BSA E-Filing)</li>
+</ul>
+
+<h2>Future Directions</h2>
+<table>
+  <tr><th>Enhancement</th><th>Description</th></tr>
+  <tr><td>Network Graph Analysis</td><td>Counterparty relationship mapping for layering chain visualization</td></tr>
+  <tr><td>MCP Integration (Slack)</td><td>Real-time alert notifications to compliance Slack channels</td></tr>
+  <tr><td>SAR Auto-Filing</td><td>Generate FinCEN-ready SAR XML from investigation reports</td></tr>
+  <tr><td>ML Anomaly Detection</td><td>Train models on labeled fraud data for beyond-rule-based detection</td></tr>
+  <tr><td>Org Rollup</td><td>Multi-entity compliance views for holding companies</td></tr>
+  <tr><td>Reusable Skill</td><td>Publish as Cortex Code skill for other teams</td></tr>
+</table>
+
+<div class="footer">
+  RegIntel Copilot — Built entirely with Snowflake CoCo (Cortex Code) · October 2026<br>
+  <em>DISCLAIMER: This is a prototype built on synthetic data. Not intended for production regulatory use without validation.</em>
+</div>
+
+</body>
+</html>
