@@ -1,4 +1,3 @@
-import os
 import json
 from datetime import datetime
 
@@ -11,8 +10,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-_ttl = os.getenv("SNOWFLAKE_CONNECTION_TTL")
-conn = st.connection("snowflake", ttl=int(_ttl) if _ttl else None)
+conn = st.connection("snowflake")
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
