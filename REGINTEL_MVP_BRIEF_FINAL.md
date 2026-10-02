@@ -97,34 +97,7 @@ Fraud Patterns Modeled
 The synthetic data contains four fraud typologies as labeled ground truth:
 
 **Structuring (
-12.18
-M
-e
-x
-p
-o
-s
-u
-r
-e
-,
-1
-,
-357
-t
-r
-a
-n
-s
-a
-c
-t
-i
-o
-n
-s
-)
-:
+12.18M exposure, 1,357 transactions):
 ∗
 ∗
 T
@@ -560,7 +533,7 @@ R
 t
 h
 e
-10,000forcashtransactions.SARreportingcriteriaforqualifyingsuspicioustransactionsper31CFR§1020.320(the5,000 threshold applicable to banks; note that thresholds vary by institution type). SAR filing deadline of 30 calendar days from initial detection, with an extension to 60 calendar days if no suspect is identified (per FinCEN filing instructions). Structuring detection and wire transfer record-keeping requirements.
+10,000 for cash transactions. SAR reporting criteria for qualifying suspicious transactions per 31CFR §1020.320(the5,000 threshold applicable to banks; note that thresholds vary by institution type). SAR filing deadline of 30 calendar days from initial detection, with an extension to 60 calendar days if no suspect is identified (per FinCEN filing instructions). Structuring detection and wire transfer record-keeping requirements.
 
 Basel III (International): Liquidity Coverage Ratio with a fully-implemented minimum of 100%. Capital Adequacy Ratios including CET1 minimum of 4.5% and total capital minimum of 8% of risk-weighted assets.
 
