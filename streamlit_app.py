@@ -1,8 +1,8 @@
 import json
+import os
 from datetime import datetime
 
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
 
 st.set_page_config(
     page_title="RegIntel Copilot",
@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-session = get_active_session()
+conn = st.connection("snowflake", type="snowflake-callers-rights")
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -36,7 +36,7 @@ with st.sidebar:
 # ── Helpers ──────────────────────────────────────────────────────────────────
 @st.cache_data(ttl=120)
 def run_query(sql):
-    return session.sql(sql).to_pandas()
+    return conn.query(sql)
 
 
 def call_agent(question: str) -> str:
@@ -47,16 +47,18 @@ def call_agent(question: str) -> str:
             ]
         }
     )
-    escaped = agent_input.replace("'", "''")
-    response = session.sql(f"""
+    response = conn.query(
+        """
         SELECT TRY_PARSE_JSON(
             SNOWFLAKE.CORTEX.DATA_AGENT_RUN(
                 'REGINTEL_DB.SEMANTIC.REGINTEL_COPILOT_AGENT',
-                '{escaped}',
+                ?,
                 TRUE
             )
         ) AS RESPONSE
-    """).to_pandas()
+        """,
+        params=[agent_input],
+    )
     result = response.iloc[0]["RESPONSE"]
     if isinstance(result, str):
         result = json.loads(result)
