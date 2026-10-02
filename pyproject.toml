@@ -5,9 +5,5 @@ version = "0.0.1"
 description = "RegIntel Copilot - Risk, Fraud & Regulatory Intelligence"
 dependencies = [
     "streamlit>=1.38.0",
-    "snowflake-connector-python>=3.12.0",
-    "snowflake-snowpark-python>=1.20.0"
+    "snowflake-connector-python>=3.12.0"
 ]
-
-[tool.uv]
-constraint-dependencies = ["numba>=0.56.0"]
