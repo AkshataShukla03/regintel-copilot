@@ -11,7 +11,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-conn = st.connection("snowflake", type="snowflake-callers-rights")
+conn = st.connection("snowflake")
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
